@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Description" name="Flash App For Students">
+    <meta name="Keywords" name="Flash card">
+    <meta name="Author" name="Lalaine Rada
+    Lead Developer / Jamaica Pepito / Benjie Pasulot
+    UI/UX Designer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashMind - Smart Flashcards</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="logo-section">
+                <img src="it.png" class="logo-card" width="50px" height="50px" alt="logo">
+                <h1 class="brand-name">KnowStacks</h1>
+            </div>
+            
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="study.html" class="active">Study</a>
+                <a href="quiz.html">Quiz</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                    <span class="theme-icon">&#127769;</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+
+    <div class="main-container">
+        <div class="left-panel">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h2>Categories</h2>
+                    <button class="btn-icon" onclick="showAddCategoryModal()" title="Add Category">
+                        <span>+</span>
+                    </button>
+                </div>
+
+                <div class="categories-list" id="categoriesList">
+                </div>
+            </div>
+        </div>
+
+        <div class="center-panel">
+            <div class="flashcard-section">
+                <div class="deck-header">
+                    <h3 id="currentDeckTitle">All Cards</h3>
+                    <div class="deck-actions">
+                        <button class="btn-small btn-secondary" onclick="shuffleDeck()"> Shuffle</button>
+                        <button class="btn-small btn-secondary" onclick="resetProgress()"> Reset</button>
+                    </div>
+                </div>
+
+                <div class="card-container">
+                    <div class="flashcard" id="flashcard" onclick="flipCard()">
+                        <div class="card-face card-front">
+                            <div class="card-content" id="cardFront">Add cards to start learning!</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <div class="card-content" id="cardBack">Let's learn!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-controls-combined">
+                    <button class="btn btn-primary" onclick="prevCard()">← Previous</button>
+                    <div class="card-action-buttons">
+                        <button class="btn-round" onclick="editCurrentCard()" title="Edit Card"><section id="pen">&#9999;</section></button>
+                        <button class="btn-round delete-btn" onclick="deleteCurrentCard()" title="Delete Card"><section id="trash">&#128465;</section></button>
+                        <button class="btn-round btn-known" onclick="markKnown()" title="Know This">&#10003;</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="nextCard()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="panel-card">
+                <h3> Quick Actions</h3>
+                <div class="quick-actions">
+                    <button class="all-cards-btn active" id="allCardsBtn" onclick="selectCategory('all')">
+                        All Cards
+                    </button>
+                    <button class="btn btn-primary btn-full" onclick="showAddCardModal()">
+                        + Add New Card
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <h3>Progress</h3>
+                <div class="progress-info">
+                    <div class="progress-count">
+                        <span class="current" id="currentCard">0</span>
+                        <span class="separator">/</span>
+                        <span class="total" id="totalCards">0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-percent" id="progressPercent">0%</div>
+                </div>
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Known:</span>
+                        <span class="stat-value" id="knownCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Learning:</span>
+                        <span class="stat-value" id="learningCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Mastery:</span>
+                        <span class="stat-value" id="masteryRate">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addCategoryModal">
+        <div class="modal-content">
+            <h2 id="categoryModalTitle">Create New Category</h2>
+            <form id="categoryForm" onsubmit="handleCategorySubmit(event)">
+                <div class="form-group">
+                    <label>Category Name</label>
+                    <input type="text" id="categoryNameInput" placeholder="e.g., JavaScript Basics" required>
+                </div>
+                <div class="form-group">
+                    <label>Category Color</label>
+                    <input type="color" id="categoryColorInput" placeholder="color" value="#667eea">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="categorySubmitBtn">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addCardModal">
+        <div class="modal-content">
+            <h2 id="cardModalTitle">+ Add New Card</h2>
+            <form id="cardForm" onsubmit="handleCardSubmit(event)">
+                <div class="form-group">
+                    <label for="categorySelect">Select Category</label>
+                    <div class="select-with-edit">
+                        <select id="categorySelect" required>
+                            <option value="">Choose a category...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="questionInput" placeholder="Type your question here..." rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="answerInput" placeholder="Type your answer here..." rows="4" required></textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeCardModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">+ Add Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<footer>
+© KnowStacks
+
+About | Contact | GitHub
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
