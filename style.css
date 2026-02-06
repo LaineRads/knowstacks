@@ -110,9 +110,9 @@ body.dark-mode h2 {
     animation: float 7s ease-in-out infinite;
 }
 
-@keyframes rotate {
-    0%, 100% { transform: rotate(20deg); }
-    50% { transform: rotate(500deg); }
+@keyframes float {
+    0%, 100% { transform: translateY(3px); }
+    50% { transform: translateY(-8px); }
 }
 
 nav {
@@ -2247,3 +2247,4 @@ body.dark-mode .info-details p {
     }
 
 }
+
