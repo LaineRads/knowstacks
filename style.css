@@ -114,7 +114,22 @@ body.dark-mode h2 {
     0%, 100% { transform: translateY(3px); }
     50% { transform: translateY(-8px); }
 }
+.logo-card::before,
+.logo-card::after {
+    content: '';
+    position: absolute;
+    background: white;
+}
 
+.logo-card::before {
+    width: 20px;
+    height: 2px;
+}
+
+.logo-card::after {
+    width: 2px;
+    height: 20px;
+}
 nav {
     display: flex;
     gap: 20px;
@@ -2247,4 +2262,5 @@ body.dark-mode .info-details p {
     }
 
 }
+
 
